@@ -34,13 +34,11 @@ a section there.
 
 Solves
 
-```
-f(w, b) = 1/(2N) * ||y - Xw - b||^2
-          + alpha * l1_ratio * ||w||_1
-          + 0.5 * alpha * (1 - l1_ratio) * ||w||^2
-```
+$$
+f(w, b) = \frac{1}{2N} \|y - Xw - b\mathbf{1}\|_2^2 + \alpha \cdot \rho \|w\|_1 + \frac{1}{2} \alpha (1 - \rho) \|w\|_2^2
+$$
 
-for dense or sparse `X`. `l1_ratio=1` is Lasso, `l1_ratio=0` is Ridge, anything in between is
+for dense or sparse $X$. $\rho=1$ is Lasso, $\rho=0$ is Ridge, anything in between is
 ElasticNet. Supports `fit_intercept`, KKT-based stopping, duality-gap reporting, and a
 warm-started regularization path.
 
@@ -72,13 +70,15 @@ The benchmark writes its raw data, tables and figures to `bench/results/` and
 
 Both backends implement the same update:
 
-```
-rho_j = x_j^T r + w_j z_j
-w_j  <- S(rho_j, N * lambda1) / (z_j + N * lambda2)
-r    <- r - (w_j_new - w_j) x_j
-```
+$$
+\begin{aligned}
+\rho_j &= x_j^\top r + w_j z_j \\
+w_j    &\leftarrow \frac{S(\rho_j, N \lambda_1)}{z_j + N \lambda_2} \\
+r      &\leftarrow r - (w_j^{\text{new}} - w_j) x_j
+\end{aligned}
+$$
 
-Sparse updates cost `O(nnz_j)` per coordinate because the intercept is tracked as a scalar and
+Sparse updates cost $\mathcal{O}(\text{nnz}_j)$ per coordinate because the intercept is tracked as a scalar and
 the residual is kept in its uncentered form.
 
 ## Benchmark (honest, at matched accuracy)
