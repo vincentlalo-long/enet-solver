@@ -33,6 +33,16 @@ htmlcov/
 # Files requested by user
 *.html
 *.txt
+*.tex
+
+# LaTeX auxiliary files
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
 
 # IDE / Editor & OS files
 .vscode/
